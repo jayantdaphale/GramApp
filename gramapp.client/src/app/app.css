@@ -99,8 +99,9 @@ button {
 }
 
 .drawer.closed {
-  width: 88px;
-  min-width: 88px;
+  width: 68px;
+  min-width: 68px;
+  padding-inline: 10px;
 }
 
 .drawer-brand {
@@ -119,6 +120,13 @@ button {
   place-items: center;
   font-weight: 700;
   color: white;
+}
+
+.drawer.closed .brand-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  font-size: 0.85rem;
 }
 
 .drawer-brand-text {
@@ -162,6 +170,14 @@ button {
   cursor: pointer;
 }
 
+.drawer.closed .drawer-link {
+  width: 48px;
+  min-height: 48px;
+  justify-content: center;
+  gap: 0;
+  padding: 10px;
+}
+
 .drawer-link:hover,
 .drawer-link.active {
   background: #1f4a63;
@@ -169,11 +185,11 @@ button {
 }
 
 .drawer-icon {
-  width: 30px;
+  width: 24px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
 }
 
 .drawer-footer {
@@ -196,6 +212,20 @@ button {
   color: #102027;
 }
 
+.drawer.closed .drawer-footer {
+  width: 48px;
+  justify-content: center;
+  gap: 0;
+  padding: 8px;
+  border-radius: 12px;
+}
+
+.drawer.closed .profile-avatar {
+  width: 32px;
+  height: 32px;
+  font-size: 0.75rem;
+}
+
 .profile-name {
   font-weight: 700;
 }
@@ -216,7 +246,8 @@ button {
   justify-content: space-between;
   gap: 18px;
   align-items: center;
-  padding: 24px 32px;
+  min-height: 64px;
+  padding: 10px 24px;
   background: #fff;
   border-bottom: 1px solid rgba(15, 23, 42, 0.06);
 }
@@ -228,13 +259,15 @@ button {
 }
 
 .drawer-toggle {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
+  width: 38px;
+  height: 38px;
+  margin: 0;
+  padding: 0;
+  border-radius: 11px;
   border: none;
   background: #112a3d;
   color: white;
-  font-size: 1.15rem;
+  font-size: 1rem;
   cursor: pointer;
   display: grid;
   place-items: center;
@@ -319,6 +352,7 @@ button {
   .drawer.closed {
     width: min(280px, 82vw);
     min-width: 0;
+    padding: 20px 16px;
     transform: translateX(-100%);
   }
 
@@ -345,7 +379,10 @@ button {
     width: 100%;
   }
 
-  .topbar { flex-direction: column; align-items: stretch; }
+  .topbar {
+    min-height: 56px;
+    padding: 8px 16px;
+  }
   .topbar-actions { justify-content: flex-end; }
 }
 
