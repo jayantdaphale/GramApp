@@ -7,6 +7,7 @@
     <SpaRoot>..\gramapp.client</SpaRoot>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:50200</SpaProxyServerUrl>
+    <UserSecretsId>gramapp-server-development</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
