@@ -19,6 +19,7 @@
 </div>
 <div class="app-shell" *ngIf="isAuthenticated">
   <aside class="drawer" [class.closed]="!drawerOpen">
+    <button class="drawer-close" type="button" (click)="closeDrawer()" aria-label="Close navigation">&times;</button>
     <div class="drawer-brand">
       <div class="brand-icon">G</div>
       <div class="drawer-brand-text">
@@ -51,10 +52,18 @@
     </div>
   </aside>
 
+  <button
+    *ngIf="drawerOpen"
+    class="drawer-backdrop"
+    type="button"
+    (click)="closeDrawer()"
+    aria-label="Close navigation">
+  </button>
+
   <div class="main-panel">
     <header class="topbar">
       <div class="topbar-heading">
-        <button class="drawer-toggle" (click)="toggleDrawer()" aria-label="Toggle navigation">
+        <button class="drawer-toggle" type="button" (click)="toggleDrawer()" aria-label="Toggle navigation" [attr.aria-expanded]="drawerOpen">
           ☰
         </button>
         <div>

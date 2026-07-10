@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, signal } from '@angular/core';
+import { Component, HostListener, signal } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { CompanyListComponent } from './company/company-list.component';
 import { UserListComponent } from './user/user-list.component';
@@ -58,15 +58,42 @@ export class App {
   showCompanies = false;
   showUsers = false;
   showDashboard = false;
-  drawerOpen = true;
+  private isMobileView = window.matchMedia('(max-width: 820px)').matches;
+  drawerOpen = !this.isMobileView;
   profileMenuOpen = false;
 
-  openCompanies() { this.showCompanies = true; this.showUsers = false; this.showDashboard = false; this.profileMenuOpen = false; }
-  openUsers() { this.showUsers = true; this.showCompanies = false; this.showDashboard = false; this.profileMenuOpen = false; }
-  openDashboard(){ this.showDashboard = true; this.showCompanies = false; this.showUsers = false; this.profileMenuOpen = false; }
+  openCompanies() { this.showCompanies = true; this.showUsers = false; this.showDashboard = false; this.finishNavigation(); }
+  openUsers() { this.showUsers = true; this.showCompanies = false; this.showDashboard = false; this.finishNavigation(); }
+  openDashboard(){ this.showDashboard = true; this.showCompanies = false; this.showUsers = false; this.finishNavigation(); }
 
   toggleDrawer() {
     this.drawerOpen = !this.drawerOpen;
+  }
+
+  closeDrawer() {
+    this.drawerOpen = false;
+  }
+
+  @HostListener('document:keydown.escape')
+  handleEscape() {
+    this.closeDrawer();
+    this.profileMenuOpen = false;
+  }
+
+  @HostListener('window:resize')
+  handleResize() {
+    const isMobile = window.matchMedia('(max-width: 820px)').matches;
+    if (isMobile && !this.isMobileView) {
+      this.closeDrawer();
+    }
+    this.isMobileView = isMobile;
+  }
+
+  private finishNavigation() {
+    this.profileMenuOpen = false;
+    if (this.isMobileView) {
+      this.closeDrawer();
+    }
   }
 
   toggleProfileMenu() {
