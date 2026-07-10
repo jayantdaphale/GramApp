@@ -1,0 +1,73 @@
+<div class="dashboard-header">
+  <div class="header-left">
+    <h1>Gram Panchayat Overview</h1>
+    <p>Monitor company records and user access from a single administration panel.</p>
+  </div>
+  <button type="button" class="refresh-button" (click)="loadDashboard()">Refresh</button>
+</div>
+
+<div class="state-card" *ngIf="isLoading">Loading dashboard data...</div>
+<div class="state-card error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</div>
+
+<div class="dashboard-body" *ngIf="!isLoading && !errorMessage">
+  <section class="summary-grid">
+    <article class="summary-card" *ngFor="let item of summaries">
+      <span>{{ item.label }}</span>
+      <strong>{{ item.value }}</strong>
+      <small>{{ item.helper }}</small>
+    </article>
+  </section>
+
+  <section class="records-grid">
+    <article class="records-panel">
+      <div class="panel-heading">
+        <h3>Recent Companies</h3>
+        <span>{{ totalCompanies }} total</span>
+      </div>
+
+      <div class="empty-state" *ngIf="companies.length === 0">
+        <strong>No companies found</strong>
+        <p>Add company records from Company Master to populate this dashboard.</p>
+      </div>
+
+      <div class="record-row" *ngFor="let company of companies">
+        <div class="record-avatar company">{{ company.name?.charAt(0) || 'C' }}</div>
+        <div>
+          <strong>{{ company.name }}</strong>
+          <span>{{ company.location || 'Location not set' }}</span>
+        </div>
+        <small [class.inactive]="company.isActive === false">
+          {{ company.isActive === false ? 'Inactive' : 'Active' }}
+        </small>
+      </div>
+    </article>
+
+    <article class="records-panel">
+      <div class="panel-heading">
+        <h3>Recent Users</h3>
+        <span>{{ totalUsers }} total</span>
+      </div>
+
+      <div class="empty-state" *ngIf="users.length === 0">
+        <strong>No users found</strong>
+        <p>Create users from User Management to see access assignments here.</p>
+      </div>
+
+      <div class="record-row" *ngFor="let user of users">
+        <div class="record-avatar user">{{ user.email?.charAt(0) || 'U' }}</div>
+        <div>
+          <strong>{{ user.email }}</strong>
+          <span>Company #{{ user.companyId }}</span>
+        </div>
+        <small>{{ user.isSuperAdmin ? 'Super Admin' : 'User' }}</small>
+      </div>
+    </article>
+  </section>
+
+  <section class="quick-panel">
+    <div>
+      <h3>Administration Snapshot</h3>
+      <p>The dashboard reads live totals from the same APIs used by Companies and Users, so list updates appear here after refresh.</p>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,62 @@
+<div class="panel">
+  <div class="list-header">
+    <div>
+      <h2>Companies</h2>
+      <p>{{ totalCount }} company records available</p>
+    </div>
+    <button type="button" class="primary-action" (click)="openAdd()">Add Company</button>
+  </div>
+
+  <app-company-form
+    *ngIf="showForm"
+    [isUpdate]="isUpdate"
+    [model]="formModel"
+    (saved)="onSaved($event)"
+    (cancelled)="showForm = false">
+  </app-company-form>
+
+  <div class="state-message" *ngIf="isLoading">Loading companies...</div>
+  <div class="state-message error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</div>
+  <div class="state-message" *ngIf="!isLoading && !errorMessage && items.length === 0">No companies found.</div>
+
+  <div class="table-wrap" *ngIf="!isLoading && !errorMessage && items.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Location</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th class="actions-cell">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of items">
+          <td>
+            <div class="name-cell">
+              <span>{{ c.name?.charAt(0) || 'C' }}</span>
+              <strong>{{ c.name }}</strong>
+            </div>
+          </td>
+          <td>{{ c.location || 'Not set' }}</td>
+          <td>{{ c.description || 'No description' }}</td>
+          <td>
+            <span class="status" [class.inactive]="c.isActive === false">
+              {{ c.isActive === false ? 'Inactive' : 'Active' }}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <button type="button" class="table-action" (click)="openEdit(c)">Edit</button>
+            <button type="button" class="table-action danger" (click)="delete(c.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pager">
+    <button type="button" (click)="prev()" [disabled]="page === 1">Prev</button>
+    <span>Page {{ page }} of {{ totalPages }}</span>
+    <button type="button" (click)="next()" [disabled]="page >= totalPages">Next</button>
+  </div>
+</div>

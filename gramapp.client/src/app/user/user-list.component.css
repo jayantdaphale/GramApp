@@ -1,0 +1,166 @@
+.panel {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+  padding: 18px;
+}
+
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.list-header h2 {
+  color: #17324d;
+  font-size: 1.35rem;
+  margin: 0;
+}
+
+.list-header p {
+  color: #637282;
+  margin: 6px 0 0;
+}
+
+.primary-action,
+.pager button,
+.table-action {
+  border: 1px solid #cfd9e3;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.primary-action {
+  background: #3d63a3;
+  border-color: #3d63a3;
+  color: #ffffff;
+  padding: 10px 14px;
+}
+
+.state-message {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #4d5d6c;
+  padding: 16px;
+}
+
+.state-message.error {
+  background: #fff7f7;
+  border-color: #f3b7b7;
+  color: #a61b1b;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  min-width: 680px;
+  width: 100%;
+}
+
+th,
+td {
+  border-bottom: 1px solid #edf2f7;
+  color: #334155;
+  padding: 14px 12px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+th {
+  color: #637282;
+  font-size: 0.78rem;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.name-cell {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.name-cell span {
+  background: #3d63a3;
+  border-radius: 8px;
+  color: #ffffff;
+  display: grid;
+  font-weight: 800;
+  height: 34px;
+  place-items: center;
+  text-transform: uppercase;
+  width: 34px;
+}
+
+.name-cell strong {
+  color: #233548;
+  overflow-wrap: anywhere;
+}
+
+.status {
+  background: #eef2ff;
+  border-radius: 999px;
+  color: #3d63a3;
+  display: inline-flex;
+  font-weight: 700;
+  padding: 5px 10px;
+}
+
+.status.admin {
+  background: #e7f6ef;
+  color: #177245;
+}
+
+.actions-cell {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.table-action {
+  background: #ffffff;
+  color: #17324d;
+  margin-left: 8px;
+  padding: 8px 10px;
+}
+
+.table-action.danger {
+  color: #a61b1b;
+}
+
+.pager {
+  align-items: center;
+  color: #637282;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.pager button {
+  background: #ffffff;
+  color: #17324d;
+  padding: 8px 12px;
+}
+
+.pager button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (max-width: 640px) {
+  .list-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .primary-action {
+    width: 100%;
+  }
+}

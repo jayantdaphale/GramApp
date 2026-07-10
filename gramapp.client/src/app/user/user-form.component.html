@@ -1,0 +1,29 @@
+<div class="form-tray">
+  <div class="form-heading">
+    <h3>{{ isUpdate ? 'Edit User' : 'Add User' }}</h3>
+    <button type="button" class="ghost-action" (click)="cancel()">Cancel</button>
+  </div>
+
+  <div class="form-grid">
+    <label>
+      <span>Email</span>
+      <input type="email" [(ngModel)]="model.email" />
+    </label>
+    <label *ngIf="!isUpdate">
+      <span>Password</span>
+      <input type="password" [(ngModel)]="model.password" />
+    </label>
+    <label>
+      <span>Company ID</span>
+      <input type="number" [(ngModel)]="model.companyId" />
+    </label>
+    <label class="check-field">
+      <input type="checkbox" [(ngModel)]="model.isSuperAdmin" />
+      <span>Super admin access</span>
+    </label>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="save-action" (click)="save()">{{ isUpdate ? 'Update' : 'Create' }}</button>
+  </div>
+</div>

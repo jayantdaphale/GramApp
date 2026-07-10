@@ -1,0 +1,55 @@
+# Visual Studio user and workspace files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build output
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+artifacts/
+
+# .NET tooling and packages
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+*.csproj.user
+
+# Local databases
+*.db
+*.db-shm
+*.db-wal
+
+# Test and coverage output
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# IDEs and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Angular / Node.js
+node_modules/
+.angular/
+dist/
+.cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs and local secrets
+*.log
+.env
+.env.*
+!.env.example

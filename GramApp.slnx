@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="gramapp.client/gramapp.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="GramApp.Domain/GramApp.Domain.csproj" />
+  <Project Path="GramApp.Server/GramApp.Server.csproj" />
+</Solution>

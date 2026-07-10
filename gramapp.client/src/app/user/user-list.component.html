@@ -1,0 +1,60 @@
+<div class="panel">
+  <div class="list-header">
+    <div>
+      <h2>Users</h2>
+      <p>{{ totalCount }} user records available</p>
+    </div>
+    <button type="button" class="primary-action" (click)="openAdd()">Add User</button>
+  </div>
+
+  <app-user-form
+    *ngIf="showForm"
+    [isUpdate]="isUpdate"
+    [model]="formModel"
+    (saved)="onSaved($event)"
+    (cancelled)="showForm = false">
+  </app-user-form>
+
+  <div class="state-message" *ngIf="isLoading">Loading users...</div>
+  <div class="state-message error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</div>
+  <div class="state-message" *ngIf="!isLoading && !errorMessage && items.length === 0">No users found.</div>
+
+  <div class="table-wrap" *ngIf="!isLoading && !errorMessage && items.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Company</th>
+          <th>Role</th>
+          <th class="actions-cell">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of items">
+          <td>
+            <div class="name-cell">
+              <span>{{ u.email?.charAt(0) || 'U' }}</span>
+              <strong>{{ u.email }}</strong>
+            </div>
+          </td>
+          <td>Company #{{ u.companyId }}</td>
+          <td>
+            <span class="status" [class.admin]="u.isSuperAdmin">
+              {{ u.isSuperAdmin ? 'Super Admin' : 'User' }}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <button type="button" class="table-action" (click)="openEdit(u)">Edit</button>
+            <button type="button" class="table-action danger" (click)="delete(u.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pager">
+    <button type="button" (click)="prev()" [disabled]="page === 1">Prev</button>
+    <span>Page {{ page }} of {{ totalPages }}</span>
+    <button type="button" (click)="next()" [disabled]="page >= totalPages">Next</button>
+  </div>
+</div>

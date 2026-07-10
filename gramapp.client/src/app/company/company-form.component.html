@@ -1,0 +1,25 @@
+<div class="form-tray">
+  <div class="form-heading">
+    <h3>{{ isUpdate ? 'Edit Company' : 'Add Company' }}</h3>
+    <button type="button" class="ghost-action" (click)="cancel()">Cancel</button>
+  </div>
+
+  <div class="form-grid">
+    <label>
+      <span>Name</span>
+      <input [(ngModel)]="model.name" />
+    </label>
+    <label>
+      <span>Location</span>
+      <input [(ngModel)]="model.location" />
+    </label>
+    <label class="wide">
+      <span>Description</span>
+      <input [(ngModel)]="model.description" />
+    </label>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="save-action" (click)="save()">{{ isUpdate ? 'Update' : 'Create' }}</button>
+  </div>
+</div>

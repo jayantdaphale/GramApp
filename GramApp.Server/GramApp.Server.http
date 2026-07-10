@@ -1,0 +1,6 @@
+@GramApp.Server_HostAddress = http://localhost:5099
+
+GET {{GramApp.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
