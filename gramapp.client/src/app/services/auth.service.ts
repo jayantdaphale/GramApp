@@ -3,6 +3,17 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
+export interface NavigationMenu {
+  id: number;
+  name: string;
+  code: string;
+  icon?: string;
+  sortOrder: number;
+  menuGroupId: number;
+  menuGroupName: string;
+  menuGroupSortOrder: number;
+}
+
 interface AuthResponse {
   accessToken: string;
   refreshToken: string;
@@ -10,6 +21,7 @@ interface AuthResponse {
   email: string;
   companyId: number;
   isSuperAdmin: boolean;
+  menus: NavigationMenu[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -30,6 +42,15 @@ export class AuthService {
   refresh(refreshToken: string) {
     return this.http.post<AuthResponse>('/api/auth/refresh', { refreshToken }).pipe(
       tap(res => this.setAuth(res))
+    );
+  }
+
+  loadCurrentMenus() {
+    return this.http.get<NavigationMenu[]>('/api/menuaccess/current').pipe(
+      tap(menus => {
+        const current = this.auth$.value;
+        if (current) this.setAuth({ ...current, menus });
+      })
     );
   }
 

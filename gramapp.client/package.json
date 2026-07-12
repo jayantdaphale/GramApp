@@ -20,15 +20,18 @@
     "@angular/forms": "^22.0.0",
     "@angular/platform-browser": "^22.0.0",
     "@angular/router": "^22.0.0",
-    "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
     "jest-editor-support": "*",
-    "run-script-os": "*"
+    "jquery": "^4.0.0",
+    "run-script-os": "*",
+    "rxjs": "~7.8.0",
+    "select2": "^4.1.0",
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@angular/build": "^22.0.5",
     "@angular/cli": "^22.0.5",
     "@angular/compiler-cli": "^22.0.0",
+    "@types/jquery": "^4.0.1",
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
     "typescript": "~6.0.2",

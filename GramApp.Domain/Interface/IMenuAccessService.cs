@@ -1,6 +1,8 @@
+using GramApp.Domain.DTOs;
+
 namespace GramApp.Domain.Interface;
 
 public interface IMenuAccessService
 {
-    IReadOnlyList<string> GetAllowedMenus(bool isSuperAdmin, IEnumerable<string>? roles = null);
+    Task<IReadOnlyList<NavigationMenuDto>> GetAllowedMenusAsync(string userId, CancellationToken cancellationToken = default);
 }

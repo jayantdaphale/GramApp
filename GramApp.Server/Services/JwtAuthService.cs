@@ -25,6 +25,7 @@ public class JwtAuthService
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
             new Claim("companyId", user.CompanyId.ToString()),
             new Claim("isSuperAdmin", user.IsSuperAdmin.ToString())

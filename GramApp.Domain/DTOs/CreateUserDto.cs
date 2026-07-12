@@ -14,5 +14,7 @@ public class CreateUserDto
     [Required]
     public int CompanyId { get; set; }
 
+    public int? MenuAccessId { get; set; }
+
     public bool IsSuperAdmin { get; set; }
 }

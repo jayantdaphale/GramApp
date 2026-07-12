@@ -38,11 +38,22 @@ label {
   gap: 6px;
 }
 
-input {
+input,
+select {
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   color: #233548;
   padding: 10px 12px;
+}
+
+.form-error {
+  color: #a61b1b;
+  margin: 12px 0 0;
+}
+
+:host ::ng-deep .select2-container .select2-selection--single {
+  height: 42px;
+  padding: 6px;
 }
 
 .check-field {

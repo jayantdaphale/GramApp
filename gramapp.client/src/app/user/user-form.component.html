@@ -14,14 +14,26 @@
       <input type="password" [(ngModel)]="model.password" />
     </label>
     <label>
-      <span>Company ID</span>
-      <input type="number" [(ngModel)]="model.companyId" />
+      <span>Company</span>
+      <select appSelect2 select2Placeholder="Select company" [(ngModel)]="model.companyId">
+        <option value=""></option>
+        <option *ngFor="let company of companies" [value]="company.id">{{ company.name }}</option>
+      </select>
+    </label>
+    <label *ngIf="!model.isSuperAdmin">
+      <span>Menu access</span>
+      <select appSelect2 select2Placeholder="Select menu access" [(ngModel)]="model.menuAccessId">
+        <option value=""></option>
+        <option *ngFor="let access of menuAccesses" [value]="access.id">{{ access.name }}</option>
+      </select>
     </label>
     <label class="check-field">
       <input type="checkbox" [(ngModel)]="model.isSuperAdmin" />
       <span>Super admin access</span>
     </label>
   </div>
+
+  <p class="form-error" *ngIf="error">{{ error }}</p>
 
   <div class="form-actions">
     <button type="button" class="save-action" (click)="save()">{{ isUpdate ? 'Update' : 'Create' }}</button>

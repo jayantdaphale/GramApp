@@ -49,7 +49,7 @@ export class UserListComponent implements OnInit {
   }
   prev() { if (this.page>1) { this.page--; this.load(); } }
   next() { if (this.page * this.pageSize < this.totalCount) { this.page++; this.load(); } }
-  openAdd() { this.isUpdate = false; this.formModel = { email:'', password:'', companyId:1, isSuperAdmin: false }; this.showForm = true; }
+  openAdd() { this.isUpdate = false; this.formModel = { email:'', password:'', companyId:null, menuAccessId:null, isSuperAdmin: false }; this.showForm = true; }
   openEdit(u:any){ this.isUpdate = true; this.formModel = { ...u }; this.showForm = true; }
   onSaved(r:any){ this.showForm = false; this.load(); }
   delete(id:string){ if(!confirm('Delete user?')) return; this.service.deleteUser(id).subscribe(()=> this.load()); }

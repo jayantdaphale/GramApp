@@ -35,20 +35,22 @@
               }
             ],
             "styles": [
+              "node_modules/select2/dist/css/select2.min.css",
               "src/styles.css"
-            ]
+            ],
+            "allowedCommonJsDependencies": ["jquery", "select2"]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
+                  "maximumWarning": "600kB",
                   "maximumError": "1MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
+                  "maximumWarning": "6kB",
                   "maximumError": "8kB"
                 }
               ],

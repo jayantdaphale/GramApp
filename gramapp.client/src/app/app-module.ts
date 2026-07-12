@@ -16,6 +16,10 @@ import { CompanyService } from './services/company/company.service';
 import { UserService } from './services/user/user.service';
 import { AuthService } from './services/auth.service';
 import { AuthInterceptorProvider } from './services/auth.interceptor';
+import { Select2Directive } from './shared/select2.directive';
+import { MenuGroupListComponent } from './menu/menu-group-list.component';
+import { MenuListComponent } from './menu/menu-list.component';
+import { MenuAccessListComponent } from './menu/menu-access-list.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +30,11 @@ import { AuthInterceptorProvider } from './services/auth.interceptor';
     CompanyDeleteComponent,
     UserListComponent,
     UserFormComponent,
-    UserDeleteComponent
+    UserDeleteComponent,
+    Select2Directive,
+    MenuGroupListComponent,
+    MenuListComponent,
+    MenuAccessListComponent
   ],
   imports: [
     BrowserModule, CommonModule, HttpClientModule, FormsModule,

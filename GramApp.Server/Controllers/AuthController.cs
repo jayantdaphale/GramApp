@@ -3,6 +3,7 @@ using GramApp.Domain.Models;
 using GramApp.Domain.Data;
 using GramApp.Server.DTOs;
 using GramApp.Server.Services;
+using GramApp.Domain.Interface;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,13 +18,15 @@ public class AuthController : ControllerBase
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly JwtAuthService _jwtAuthService;
     private readonly ApplicationDbContext _context;
+    private readonly IMenuAccessService _menuAccessService;
 
-    public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, JwtAuthService jwtAuthService, ApplicationDbContext context)
+    public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, JwtAuthService jwtAuthService, ApplicationDbContext context, IMenuAccessService menuAccessService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _jwtAuthService = jwtAuthService;
         _context = context;
+        _menuAccessService = menuAccessService;
     }
 
     [HttpPost("login")]
@@ -66,7 +69,8 @@ public class AuthController : ControllerBase
             UserId = user.Id,
             Email = user.Email ?? string.Empty,
             CompanyId = user.CompanyId,
-            IsSuperAdmin = user.IsSuperAdmin
+            IsSuperAdmin = user.IsSuperAdmin,
+            Menus = await _menuAccessService.GetAllowedMenusAsync(user.Id)
         });
     }
 
@@ -137,7 +141,8 @@ public class AuthController : ControllerBase
             UserId = user.Id,
             Email = user.Email ?? string.Empty,
             CompanyId = user.CompanyId,
-            IsSuperAdmin = user.IsSuperAdmin
+            IsSuperAdmin = user.IsSuperAdmin,
+            Menus = await _menuAccessService.GetAllowedMenusAsync(user.Id)
         });
     }
 }

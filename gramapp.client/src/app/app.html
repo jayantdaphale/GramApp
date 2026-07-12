@@ -29,18 +29,14 @@
     </div>
 
     <nav class="drawer-menu">
-      <a class="drawer-link" [class.active]="showDashboard" (click)="openDashboard()">
-        <span class="drawer-icon">🏠</span>
-        <span class="drawer-label">Dashboard</span>
-      </a>
-      <a class="drawer-link" [class.active]="showCompanies" (click)="openCompanies()">
-        <span class="drawer-icon">🏢</span>
-        <span class="drawer-label">Companies</span>
-      </a>
-      <a class="drawer-link" [class.active]="showUsers" (click)="openUsers()">
-        <span class="drawer-icon">👥</span>
-        <span class="drawer-label">Users</span>
-      </a>
+      <div class="drawer-group" *ngFor="let group of groupedMenus">
+        <div class="drawer-group-name">{{ group.name }}</div>
+        <a class="drawer-link" *ngFor="let menu of group.menus" [class.active]="activeMenuCode === menu.code" (click)="openMenu(menu.code)">
+          <span class="drawer-icon">{{ menu.icon || '•' }}</span>
+          <span class="drawer-label">{{ menu.name }}</span>
+        </a>
+      </div>
+      <p class="no-menu" *ngIf="menus.length === 0">No menu access assigned.</p>
     </nav>
 
     <div class="drawer-footer">
@@ -87,9 +83,13 @@
     </header>
 
     <main class="content">
-      <app-dashboard *ngIf="showDashboard"></app-dashboard>
-      <app-company-list *ngIf="showCompanies"></app-company-list>
-      <app-user-list *ngIf="showUsers"></app-user-list>
+      <app-dashboard *ngIf="activeMenuCode === 'Dashboard'"></app-dashboard>
+      <app-company-list *ngIf="activeMenuCode === 'Companies'"></app-company-list>
+      <app-user-list *ngIf="activeMenuCode === 'Users'"></app-user-list>
+      <app-menu-group-list *ngIf="activeMenuCode === 'MenuGroups'"></app-menu-group-list>
+      <app-menu-list *ngIf="activeMenuCode === 'Menus'"></app-menu-list>
+      <app-menu-access-list *ngIf="activeMenuCode === 'MenuAccess'"></app-menu-access-list>
+      <div class="unknown-menu" *ngIf="activeMenuCode && !['Dashboard','Companies','Users','MenuGroups','Menus','MenuAccess'].includes(activeMenuCode)">This menu is configured, but no screen component is registered for code <strong>{{ activeMenuCode }}</strong>.</div>
     </main>
   </div>
 </div>

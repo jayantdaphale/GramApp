@@ -1,15 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, HostListener, signal } from '@angular/core';
-import { AuthService } from './services/auth.service';
-import { CompanyListComponent } from './company/company-list.component';
-import { UserListComponent } from './user/user-list.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-
-interface LoginResponse {
-  email: string;
-  companyId: number;
-  isSuperAdmin: boolean;
-}
+import { AuthService, NavigationMenu } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +17,8 @@ export class App {
 
   public profileName = '';
   public profileEmail = '';
+  public menus: NavigationMenu[] = [];
+  public activeMenuCode = '';
 
   constructor(private http: HttpClient, private auth: AuthService) {
     const user = this.auth.currentUser;
@@ -33,7 +26,12 @@ export class App {
       this.isAuthenticated = true;
       this.profileName = user.email;
       this.profileEmail = user.email;
-      this.openDashboard();
+      this.menus = user.menus ?? [];
+      this.selectInitialMenu();
+      this.auth.loadCurrentMenus().subscribe({
+        next: menus => { this.menus = menus; this.ensureActiveMenu(); },
+        error: () => { if (!this.auth.isAuthenticated()) this.isAuthenticated = false; }
+      });
     }
   }
 
@@ -46,7 +44,8 @@ export class App {
         this.isAuthenticated = true;
         this.profileName = r.email;
         this.profileEmail = r.email;
-        this.openDashboard();
+        this.menus = r.menus ?? [];
+        this.selectInitialMenu();
       },
       error: () => {
         this.isError = true;
@@ -55,16 +54,17 @@ export class App {
     });
   }
 
-  showCompanies = false;
-  showUsers = false;
-  showDashboard = false;
   private isMobileView = window.matchMedia('(max-width: 820px)').matches;
   drawerOpen = !this.isMobileView;
   profileMenuOpen = false;
 
-  openCompanies() { this.showCompanies = true; this.showUsers = false; this.showDashboard = false; this.finishNavigation(); }
-  openUsers() { this.showUsers = true; this.showCompanies = false; this.showDashboard = false; this.finishNavigation(); }
-  openDashboard(){ this.showDashboard = true; this.showCompanies = false; this.showUsers = false; this.finishNavigation(); }
+  openMenu(code: string) { this.activeMenuCode = code; this.finishNavigation(); }
+
+  get groupedMenus(): { name: string; menus: NavigationMenu[] }[] {
+    const groups = new Map<string, NavigationMenu[]>();
+    this.menus.forEach(menu => groups.set(menu.menuGroupName, [...(groups.get(menu.menuGroupName) ?? []), menu]));
+    return [...groups].map(([name, menus]) => ({ name, menus }));
+  }
 
   toggleDrawer() {
     this.drawerOpen = !this.drawerOpen;
@@ -103,18 +103,18 @@ export class App {
   logout() {
     this.auth.logout();
     this.isAuthenticated = false;
+    this.menus = [];
+    this.activeMenuCode = '';
     this.profileMenuOpen = false;
   }
 
   get sectionTitle() {
-    if (this.showCompanies) return 'Company Master';
-    if (this.showUsers) return 'User Management';
-    return 'Dashboard Overview';
+    return this.menus.find(x => x.code === this.activeMenuCode)?.name ?? 'Dashboard';
   }
 
   get sectionSubtitle() {
-    if (this.showCompanies) return 'Manage Panchayat companies, supervisors, and office allocations.';
-    if (this.showUsers) return 'Review and manage user access across the Gram Panchayat network.';
+    if (this.activeMenuCode === 'Companies') return 'Manage Panchayat companies, supervisors, and office allocations.';
+    if (this.activeMenuCode === 'Users') return 'Review and manage user access across the Gram Panchayat network.';
     return 'View active metrics and quick actions for your administration team.';
   }
 
@@ -124,4 +124,12 @@ export class App {
   }
 
   protected readonly title = signal('GramApp');
+
+  private selectInitialMenu(): void {
+    this.activeMenuCode = this.menus.find(x => x.code === 'Dashboard')?.code ?? this.menus[0]?.code ?? '';
+  }
+
+  private ensureActiveMenu(): void {
+    if (!this.menus.some(x => x.code === this.activeMenuCode)) this.selectInitialMenu();
+  }
 }

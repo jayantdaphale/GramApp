@@ -37,11 +37,12 @@
               <strong>{{ u.email }}</strong>
             </div>
           </td>
-          <td>Company #{{ u.companyId }}</td>
+          <td>{{ u.companyName || ('Company #' + u.companyId) }}</td>
           <td>
             <span class="status" [class.admin]="u.isSuperAdmin">
               {{ u.isSuperAdmin ? 'Super Admin' : 'User' }}
             </span>
+            <small *ngIf="!u.isSuperAdmin">{{ u.menuAccessName || 'No menu access' }}</small>
           </td>
           <td class="actions-cell">
             <button type="button" class="table-action" (click)="openEdit(u)">Edit</button>

@@ -20,6 +20,8 @@ builder.Services.AddOpenApi();
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>() ?? new JwtSettings();
+using var jwtSha = System.Security.Cryptography.SHA256.Create();
+var jwtKey = jwtSha.ComputeHash(Encoding.UTF8.GetBytes(jwtSettings.SigningKey));
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
@@ -60,7 +62,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtSettings.Issuer,
         ValidAudience = jwtSettings.Audience,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SigningKey)),
+        IssuerSigningKey = new SymmetricSecurityKey(jwtKey),
         ClockSkew = TimeSpan.FromMinutes(1)
     };
 });

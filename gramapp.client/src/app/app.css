@@ -170,6 +170,32 @@ button {
   cursor: pointer;
 }
 
+.drawer-group-name {
+  color: #7890a2;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 10px 16px 4px;
+  text-transform: uppercase;
+}
+
+.drawer.closed .drawer-group-name {
+  display: none;
+}
+
+.no-menu {
+  color: #a0b1c2;
+  padding: 12px 16px;
+}
+
+.unknown-menu {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #4d5d6c;
+  padding: 18px;
+}
+
 .drawer.closed .drawer-link {
   width: 48px;
   min-height: 48px;

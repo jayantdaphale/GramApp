@@ -13,6 +13,8 @@ public static class IdentitySeedData
 
         await context.Database.EnsureCreatedAsync();
 
+        await SeedMenusAsync(context);
+
         if (!context.Companies.Any())
         {
             var company = new Company
@@ -50,5 +52,22 @@ public static class IdentitySeedData
                 await userManager.AddToRoleAsync(superAdmin, "SuperAdmin");
             }
         }
+    }
+
+    private static async Task SeedMenusAsync(GramApp.Domain.Data.ApplicationDbContext context)
+    {
+        if (context.MenuGroups.Any()) return;
+
+        var general = new MenuGroup { Name = "General", SortOrder = 1, IsActive = true };
+        var administration = new MenuGroup { Name = "Administration", SortOrder = 2, IsActive = true };
+        context.MenuGroups.AddRange(general, administration);
+        context.Menus.AddRange(
+            new Menu { MenuGroup = general, Name = "Dashboard", Code = "Dashboard", Icon = "🏠", SortOrder = 1, IsActive = true },
+            new Menu { MenuGroup = administration, Name = "Companies", Code = "Companies", Icon = "🏢", SortOrder = 1, IsActive = true },
+            new Menu { MenuGroup = administration, Name = "Users", Code = "Users", Icon = "👥", SortOrder = 2, IsActive = true },
+            new Menu { MenuGroup = administration, Name = "Menu Groups", Code = "MenuGroups", Icon = "🗂️", SortOrder = 3, IsActive = true },
+            new Menu { MenuGroup = administration, Name = "Menus", Code = "Menus", Icon = "📋", SortOrder = 4, IsActive = true },
+            new Menu { MenuGroup = administration, Name = "Menu Access", Code = "MenuAccess", Icon = "🔐", SortOrder = 5, IsActive = true });
+        await context.SaveChangesAsync();
     }
 }

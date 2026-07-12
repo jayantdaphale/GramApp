@@ -1,3 +1,5 @@
+using GramApp.Domain.DTOs;
+
 namespace GramApp.Server.DTOs;
 
 public class AuthResponseDto
@@ -8,4 +10,5 @@ public class AuthResponseDto
     public string Email { get; set; } = string.Empty;
     public int CompanyId { get; set; }
     public bool IsSuperAdmin { get; set; }
+    public IReadOnlyList<NavigationMenuDto> Menus { get; set; } = Array.Empty<NavigationMenuDto>();
 }

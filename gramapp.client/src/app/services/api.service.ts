@@ -38,4 +38,19 @@ export class ApiService {
   deleteUser(id: string) {
     return this.http.delete(`/api/users/${id}`);
   }
+
+  getMenuGroups() { return this.http.get<any[]>('/api/menugroups'); }
+  createMenuGroup(dto: any) { return this.http.post('/api/menugroups', dto); }
+  updateMenuGroup(id: number, dto: any) { return this.http.put(`/api/menugroups/${id}`, dto); }
+  deleteMenuGroup(id: number) { return this.http.delete(`/api/menugroups/${id}`); }
+
+  getMenus() { return this.http.get<any[]>('/api/menus'); }
+  createMenu(dto: any) { return this.http.post('/api/menus', dto); }
+  updateMenu(id: number, dto: any) { return this.http.put(`/api/menus/${id}`, dto); }
+  deleteMenu(id: number) { return this.http.delete(`/api/menus/${id}`); }
+
+  getMenuAccesses() { return this.http.get<any[]>('/api/menuaccess'); }
+  createMenuAccess(dto: any) { return this.http.post('/api/menuaccess', dto); }
+  updateMenuAccess(id: number, dto: any) { return this.http.put(`/api/menuaccess/${id}`, dto); }
+  deleteMenuAccess(id: number) { return this.http.delete(`/api/menuaccess/${id}`); }
 }
