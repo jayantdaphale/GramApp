@@ -32,7 +32,10 @@ export class UserFormComponent implements OnInit {
     forkJoin({ companies: this.companyService.getCompanies(1, 100), menuAccesses: this.menuService.getMenuAccessOptions() }).subscribe({
       next: result => {
         this.companies = normalizePagedResult(result.companies).items;
-        this.menuAccesses = result.menuAccesses.filter(x => x.isActive);
+        const selectedMenuAccessId = Number(this.model.menuAccessId);
+        this.menuAccesses = result.menuAccesses.filter(x =>
+          x.isActive || Number(x.id) === selectedMenuAccessId
+        );
         this.cdr.detectChanges();
       },
       error: () => {

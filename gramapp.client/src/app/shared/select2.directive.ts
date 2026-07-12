@@ -1,7 +1,13 @@
 import { AfterViewInit, ChangeDetectorRef, Directive, ElementRef, forwardRef, Input, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import $ from 'jquery';
-import 'select2';
+import select2Factory from 'select2';
+
+select2Factory(window, $);
+
+if (typeof $.fn.select2 !== 'function') {
+  throw new Error('Select2 failed to initialize.');
+}
 
 declare global {
   interface JQuery {
