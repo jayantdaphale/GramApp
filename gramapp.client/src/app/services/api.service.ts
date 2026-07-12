@@ -39,17 +39,29 @@ export class ApiService {
     return this.http.delete(`/api/users/${id}`);
   }
 
-  getMenuGroups() { return this.http.get<any[]>('/api/menugroups'); }
+  getMenuGroups(page: number, pageSize: number) {
+    const params = new HttpParams().set('page', page.toString()).set('pageSize', pageSize.toString());
+    return this.http.get<any>('/api/menugroups', { params });
+  }
+  getMenuGroupOptions() { return this.http.get<any[]>('/api/menugroups/options'); }
   createMenuGroup(dto: any) { return this.http.post('/api/menugroups', dto); }
   updateMenuGroup(id: number, dto: any) { return this.http.put(`/api/menugroups/${id}`, dto); }
   deleteMenuGroup(id: number) { return this.http.delete(`/api/menugroups/${id}`); }
 
-  getMenus() { return this.http.get<any[]>('/api/menus'); }
+  getMenus(page: number, pageSize: number) {
+    const params = new HttpParams().set('page', page.toString()).set('pageSize', pageSize.toString());
+    return this.http.get<any>('/api/menus', { params });
+  }
+  getMenuOptions() { return this.http.get<any[]>('/api/menus/options'); }
   createMenu(dto: any) { return this.http.post('/api/menus', dto); }
   updateMenu(id: number, dto: any) { return this.http.put(`/api/menus/${id}`, dto); }
   deleteMenu(id: number) { return this.http.delete(`/api/menus/${id}`); }
 
-  getMenuAccesses() { return this.http.get<any[]>('/api/menuaccess'); }
+  getMenuAccesses(page: number, pageSize: number) {
+    const params = new HttpParams().set('page', page.toString()).set('pageSize', pageSize.toString());
+    return this.http.get<any>('/api/menuaccess', { params });
+  }
+  getMenuAccessOptions() { return this.http.get<any[]>('/api/menuaccess/options'); }
   createMenuAccess(dto: any) { return this.http.post('/api/menuaccess', dto); }
   updateMenuAccess(id: number, dto: any) { return this.http.put(`/api/menuaccess/${id}`, dto); }
   deleteMenuAccess(id: number) { return this.http.delete(`/api/menuaccess/${id}`); }

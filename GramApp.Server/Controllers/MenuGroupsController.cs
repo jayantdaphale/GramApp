@@ -16,7 +16,25 @@ public class MenuGroupsController : ControllerBase
     public MenuGroupsController(ApplicationDbContext context) => _context = context;
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MenuGroupDto>>> GetAll(CancellationToken cancellationToken) => Ok(
+    public async Task<ActionResult<PaginatedResult<MenuGroupDto>>> GetAll(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        CancellationToken cancellationToken = default)
+    {
+        page = Math.Max(1, page);
+        pageSize = Math.Clamp(pageSize, 1, 100);
+        var query = _context.MenuGroups.AsNoTracking()
+            .OrderBy(x => x.SortOrder).ThenBy(x => x.Name);
+        var totalCount = await query.CountAsync(cancellationToken);
+        var items = await query.Skip((page - 1) * pageSize).Take(pageSize)
+            .Select(x => new MenuGroupDto { Id = x.Id, Name = x.Name, SortOrder = x.SortOrder, IsActive = x.IsActive })
+            .ToListAsync(cancellationToken);
+
+        return Ok(new PaginatedResult<MenuGroupDto> { Items = items, Page = page, PageSize = pageSize, TotalCount = totalCount });
+    }
+
+    [HttpGet("options")]
+    public async Task<ActionResult<IEnumerable<MenuGroupDto>>> GetOptions(CancellationToken cancellationToken) => Ok(
         await _context.MenuGroups.AsNoTracking()
             .OrderBy(x => x.SortOrder).ThenBy(x => x.Name)
             .Select(x => new MenuGroupDto { Id = x.Id, Name = x.Name, SortOrder = x.SortOrder, IsActive = x.IsActive })

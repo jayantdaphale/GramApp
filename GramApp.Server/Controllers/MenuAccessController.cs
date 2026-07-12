@@ -25,7 +25,29 @@ public class MenuAccessController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MenuAccessDto>>> GetAll(CancellationToken cancellationToken) => Ok(
+    public async Task<ActionResult<PaginatedResult<MenuAccessDto>>> GetAll(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        CancellationToken cancellationToken = default)
+    {
+        page = Math.Max(1, page);
+        pageSize = Math.Clamp(pageSize, 1, 100);
+        var query = _context.MenuAccesses.AsNoTracking().OrderBy(x => x.Name);
+        var totalCount = await query.CountAsync(cancellationToken);
+        var items = await query.Skip((page - 1) * pageSize).Take(pageSize)
+            .Select(x => new MenuAccessDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                IsActive = x.IsActive,
+                MenuIds = x.MenuAccessMenus.Select(link => link.MenuId).ToList()
+            }).ToListAsync(cancellationToken);
+
+        return Ok(new PaginatedResult<MenuAccessDto> { Items = items, Page = page, PageSize = pageSize, TotalCount = totalCount });
+    }
+
+    [HttpGet("options")]
+    public async Task<ActionResult<IEnumerable<MenuAccessDto>>> GetOptions(CancellationToken cancellationToken) => Ok(
         await _context.MenuAccesses.AsNoTracking().OrderBy(x => x.Name)
             .Select(x => new MenuAccessDto
             {

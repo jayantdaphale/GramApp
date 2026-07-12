@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, forwardRef, Input, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Directive, ElementRef, forwardRef, Input, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import $ from 'jquery';
 import 'select2';
@@ -24,19 +24,19 @@ export class Select2Directive implements AfterViewInit, OnDestroy, ControlValueA
   private onChange: (value: string | null) => void = () => undefined;
   private onTouched: () => void = () => undefined;
 
-  constructor(elementRef: ElementRef<HTMLSelectElement>) {
+  constructor(elementRef: ElementRef<HTMLSelectElement>, private cdr: ChangeDetectorRef) {
     this.element = $(elementRef.nativeElement);
   }
 
   ngAfterViewInit(): void {
     this.initialize();
-    this.observer = new MutationObserver(() => this.reinitialize());
+    this.observer = new MutationObserver(() => this.syncSelection());
     this.observer.observe(this.element[0], { childList: true, subtree: true });
   }
 
   writeValue(value: unknown): void {
     this.value = value === null || value === undefined || value === '' ? null : String(value);
-    if (this.initialized) this.element.val(this.value ?? '').trigger('change.select2');
+    if (this.initialized) this.syncSelection();
   }
 
   registerOnChange(fn: (value: string | null) => void): void { this.onChange = fn; }
@@ -52,19 +52,18 @@ export class Select2Directive implements AfterViewInit, OnDestroy, ControlValueA
   private initialize(): void {
     this.element.select2({ width: '100%', placeholder: this.select2Placeholder, allowClear: true });
     this.initialized = true;
-    this.element.val(this.value ?? '').trigger('change.select2');
+    this.syncSelection();
     this.element.on('change.select2Angular', () => {
       const value = this.element.val();
-      this.onChange(value === '' || value === null ? null : String(value));
+      this.value = value === '' || value === null ? null : String(value);
+      this.onChange(this.value);
+      this.cdr.markForCheck();
     });
     this.element.on('select2:close.select2Angular', () => this.onTouched());
   }
 
-  private reinitialize(): void {
+  private syncSelection(): void {
     if (!this.initialized) return;
-    this.element.off('.select2Angular');
-    this.element.select2('destroy');
-    this.initialized = false;
-    this.initialize();
+    this.element.val(this.value ?? '').trigger('change.select2');
   }
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { forkJoin } from 'rxjs';
 import { UserService } from '../services/user/user.service';
 import { CompanyService } from '../services/company/company.service';
@@ -21,15 +21,24 @@ export class UserFormComponent implements OnInit {
   menuAccesses: any[] = [];
   error = '';
 
-  constructor(private service: UserService, private companyService: CompanyService, private menuService: MenuService) {}
+  constructor(
+    private service: UserService,
+    private companyService: CompanyService,
+    private menuService: MenuService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    forkJoin({ companies: this.companyService.getCompanies(1, 100), menuAccesses: this.menuService.getMenuAccesses() }).subscribe({
+    forkJoin({ companies: this.companyService.getCompanies(1, 100), menuAccesses: this.menuService.getMenuAccessOptions() }).subscribe({
       next: result => {
         this.companies = normalizePagedResult(result.companies).items;
         this.menuAccesses = result.menuAccesses.filter(x => x.isActive);
+        this.cdr.detectChanges();
       },
-      error: () => this.error = 'Company and menu access options could not be loaded.'
+      error: () => {
+        this.error = 'Company and menu access options could not be loaded.';
+        this.cdr.detectChanges();
+      }
     });
   }
 
